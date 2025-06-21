@@ -10,7 +10,7 @@
                     <div class="card-body">
                         <p class="card-text">Наименование товара: {{ product.name }}</p>
                         <p class="card-text">Категория товара: {{ product.category }}</p>
-                        <p class="card-text">Описание товара: {{ product.description|slice:":100" }}{% if product.description|length > 100 %}...{% endif %}</p>
+                        <p class="card-text">Описание товара: {{ product.description}}</p>
                         <p class="card-text">Цена за покупку: {{ product.purchase_price }} руб.</p>
                         <p class="card-text">Дата создания: {{ product.created_at }}</p>
                         <p class="card-text">Дата последнего изменения: {{ product.updated_at }}</p>
