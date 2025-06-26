@@ -1,6 +1,6 @@
 from gc import get_objects
 from itertools import product
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse_lazy
 
 from catalog.models import Product
@@ -29,3 +29,6 @@ class ProductUpdateView(UpdateView):
 class ProductDeleteView(DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:product_list')
+
+class ContactView(TemplateView):
+    template_name = "catalog/contact.html"
