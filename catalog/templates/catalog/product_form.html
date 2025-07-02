@@ -1,24 +1,44 @@
 {% extends 'catalog/base.html'%}
 {% block content %}
-<div class="container">
-  <div class="row">
-    <div class="col-10">
-      <form class="row" method="post" enctype="multipart/form-data">
-        <div class="card">
-          <div class="card-body">
-            {% csrf_token %}
-            {{ form.as_p }}
-          </div>
-          <button type="submit" class="btn btn-primary">
-            {% if object %}
-            Сохранить
-            {% else %}
-            Создать
-            {% endif %}
-          </button>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4>Создать товар</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{ form.as_p }}
+                        </div>
+
+                        <!-- Отображение ошибок формы -->
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <!-- Отображение ошибок для каждого поля -->
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        {% endfor %}
+
+                        <button type="submit" class="btn btn-primary btn-block">
+                            {% if object %}
+                                Сохранить
+                            {% else %}
+                                Создать
+                            {% endif %}
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
-      </form>
     </div>
-  </div>
 </div>
 {% endblock %}
