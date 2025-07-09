@@ -1,4 +1,6 @@
 from django.db import models
+from users.models import User
+
 
 
 class Category(models.Model):
@@ -23,6 +25,11 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    STATUS_CHOICES = [
+        ('draft', 'Черновик'),
+        ('published', 'Опубликован'),
+    ]
+
     name = models.CharField(
         max_length=100,
         verbose_name="Наименование товара",
@@ -69,10 +76,24 @@ class Product(models.Model):
         help_text="Укажите дату последнего изменения",
     )
 
+    # Поле для статуса публикации
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default='draft',
+        verbose_name='Статус публикации',
+    )
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+
     class Meta:
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
         ordering = ["name", "category", "purchase_price"]
+        # Кастомные права
+        permissions = [
+            ("can_unpublish_product", "Can unpublish product"),
+            ("can_delete_product", "Can delete product"),
+        ]
 
     def __str__(self):
         return self.name
