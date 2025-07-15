@@ -1,0 +1,36 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+{% block content %}
+<div class="album py-5 bg-body-tertiary">
+    <div class="container">
+        <h2>Продукты категории: {{ category.name }}</h2>
+        {% if object_list %}
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {% for product in object_list %}
+                <div class="col">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">Описание: {{ product.description|truncatechars:100 }}</p>
+                            <p class="card-text">Цена: {{ product.purchase_price }} руб.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    {% if perms.catalog.can_unpublish_product or user == product.owner %}
+                                    <a class="btn btn-primary" href="{% url 'catalog:product_update' product.pk %}">Редактировать</a>
+                                    <a class="btn btn-primary" href="{% url 'catalog:product_delete' product.pk %}">Удалить</a>
+                                    {% endif %}
+                                    <a class="btn btn-primary" href="{% url 'catalog:product_detail' product.pk %}">Посмотреть</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>В этой категории пока нет товаров.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
